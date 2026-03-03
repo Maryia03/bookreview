@@ -4,10 +4,12 @@ import com.example.bookreview.models.Book;
 import com.example.bookreview.models.DTO.CommentDTO;
 import com.example.bookreview.models.DTO.CommentRequest;
 import com.example.bookreview.models.User;
-import com.example.bookreview.repositories.BookRepository;
-import com.example.bookreview.repositories.UserRepository;
+import com.example.bookreview.models.Comment;
 import com.example.bookreview.security.SecurityUtils;
 import com.example.bookreview.services.CommentService;
+import com.example.bookreview.services.BookService;
+import com.example.bookreview.services.CommentReactionService;
+import com.example.bookreview.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,31 +21,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController{
     private final CommentService commentService;
-    private final BookRepository bookRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final BookService bookService;
+    private final CommentReactionService reactionService;
 
     @GetMapping("/books/{bookId}/comments")
-    public ResponseEntity<Page<CommentDTO>> getCommentsPaged(
+    public Page<CommentDTO> getComments(
             @PathVariable Long bookId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "new") String sortBy){
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
-        String email = SecurityUtils.getCurrentUserEmail();
         User currentUser = null;
-        if (email != null){
-            currentUser = userRepository.findByEmail(email).orElse(null);
-        }
-        return ResponseEntity.ok(commentService.getCommentsForBookPaged(book, currentUser, page, size, sortBy)
-        );
+        String email = SecurityUtils.getCurrentUserEmail();
+        if (email != null) currentUser = userService.getByEmail(email);
+        Book book = bookService.getBookEntityById(bookId);
+        return commentService.getCommentsForBookPaged(book, currentUser, page, size, sortBy);
     }
 
     @PostMapping("/books/{bookId}/comments")
-    public ResponseEntity<CommentDTO> addComment(@PathVariable Long bookId, @RequestBody CommentRequest request){
-        String email = SecurityUtils.getCurrentUserEmail();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
-        CommentDTO response = commentService.addComment(user, book, request.getContent());
-        return ResponseEntity.ok(response);
+    public CommentDTO addComment(@PathVariable Long bookId, @RequestBody CommentRequest request){
+        User user = userService.getByEmail(SecurityUtils.getCurrentUserEmail());
+        Book book = bookService.getBookEntityById(bookId);
+        return commentService.addComment(user, book, request.getContent());
+    }
+
+    @PostMapping("/comments/{commentId}/like")
+    public CommentDTO likeComment(@PathVariable Long commentId){
+        User user = userService.getByEmail(SecurityUtils.getCurrentUserEmail());
+        Comment comment = commentService.getById(commentId);
+        reactionService.reactToComment(user, comment, 1);
+        return commentService.mapToDTO(comment, user);
+    }
+
+    @PostMapping("/comments/{commentId}/dislike")
+    public CommentDTO dislikeComment(@PathVariable Long commentId){
+        User user = userService.getByEmail(SecurityUtils.getCurrentUserEmail());
+        Comment comment = commentService.getById(commentId);
+        reactionService.reactToComment(user, comment, -1);
+        return commentService.mapToDTO(comment, user);
     }
 }

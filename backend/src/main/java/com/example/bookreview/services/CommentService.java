@@ -19,6 +19,7 @@ import java.util.List;
 public class CommentService{
     private final CommentRepository commentRepository;
     private final CommentReactionRepository reactionRepository;
+
     public CommentDTO addComment(User user, Book book, String content){
         if (user.isBlocked()){
             throw new RuntimeException("Blocked users cannot comment");
@@ -38,6 +39,25 @@ public class CommentService{
         return mapToDTO(saved, user);
     }
 
+    public Comment getById(Long id) {
+        return commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+    }
+
+    public CommentDTO toDTO(Comment comment){
+        return CommentDTO.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .createdDate(comment.getCreatedDate())
+                .username(comment.getUser().getUsername())
+                .avatarUrl(comment.getUser().getAvatarUrl())
+                .likesCount(comment.getReactions() == null ? 0 :
+                        comment.getReactions().stream().filter(r -> r.getValue() == 1).count())
+                .dislikesCount(comment.getReactions() == null ? 0 :
+                        comment.getReactions().stream().filter(r -> r.getValue() == -1).count())
+                .userReaction(null)
+                .build();
+    }
+
     public void deleteComment(Long commentId){
         if (!commentRepository.existsById(commentId)) {
             throw new RuntimeException("Comment not found");
@@ -45,18 +65,8 @@ public class CommentService{
         commentRepository.deleteById(commentId);
     }
 
-    public Page<CommentDTO> getCommentsForBookPaged(
-            Book book,
-            User currentUser,
-            int page,
-            int size,
-            String sortBy){
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                Sort.by(Sort.Direction.DESC, "createdDate") // если у тебя createdAt — поменяй здесь
-        );
-
+    public Page<CommentDTO> getCommentsForBookPaged(Book book, User currentUser, int page, int size, String sortBy){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdDate"), Sort.Order.desc("id")));
         Page<Comment> commentsPage = commentRepository.findByBook(book, pageable);
         Page<CommentDTO> dtoPage = commentsPage.map(comment -> mapToDTO(comment, currentUser));
         if ("top".equalsIgnoreCase(sortBy)){
@@ -69,7 +79,7 @@ public class CommentService{
         return dtoPage;
     }
 
-    private CommentDTO mapToDTO(Comment comment, User currentUser){
+    public CommentDTO mapToDTO(Comment comment, User currentUser){
         List<?> reactions = comment.getReactions() != null ? comment.getReactions() : Collections.emptyList();
         long likes = comment.getReactions() == null ? 0 : comment.getReactions().stream()
                         .filter(r -> r.getValue() == 1)
@@ -79,7 +89,6 @@ public class CommentService{
                         .filter(r -> r.getValue() == -1)
                         .count();
         String userReaction = null;
-
         if (currentUser != null && comment.getReactions() != null){
             userReaction = comment.getReactions().stream()
                     .filter(r -> r.getUser().getId().equals(currentUser.getId()))

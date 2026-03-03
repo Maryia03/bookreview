@@ -26,11 +26,15 @@ public class BookService {
     private final RatingRepository ratingRepository;
     private final CommentService commentService;
 
-    public List<BookDTO> getAllBooks() {
+    public List<BookDTO> getAllBooks(){
         return bookRepository.findAll()
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Book getBookEntityById(Long id){
+        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
     public BookDTO createBook(BookDTO dto){
@@ -47,11 +51,9 @@ public class BookService {
     public BookDetailsDTO getBookDetails(Long bookId, User currentUser, String sortBy) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
         //average rating
-        List<Rating> ratings = ratingRepository.findByBook(book);
-        double avgRating = ratings.stream()
-                .mapToDouble(r -> r.getScore().doubleValue())
-                .average().orElse(0.0);
-        long ratingsCount = ratings.size();
+        BigDecimal averageBD = ratingRepository.findAverageScoreByBook(book);
+        Long ratingsCount = ratingRepository.countByBook(book);
+        double avgRating = averageBD != null ? averageBD.setScale(2, RoundingMode.HALF_UP).doubleValue() : 0.0;
         Double userRating = null;
         if (currentUser != null) {
             userRating = ratingRepository.findByUserAndBook(currentUser, book)
@@ -66,7 +68,7 @@ public class BookService {
                 .author(book.getAuthor())
                 .description(book.getDescription())
                 .coverUrl(book.getCoverUrl())
-                .averageRating(Math.round(avgRating * 100.0) / 100.0)
+                .averageRating(avgRating)
                 .ratingsCount(ratingsCount)
                 .userRating(userRating)
                 .comments(commentsPage.getContent())

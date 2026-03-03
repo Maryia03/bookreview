@@ -20,8 +20,13 @@ public class Comment{
     @Column(nullable = false, length = 2000)
     private String content;
 
-    @Column(name = "created_at")
-    private LocalDate createdDate = LocalDate.now();
+    @Column(name = "created_at", nullable = false)
+    private LocalDate createdDate;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDate.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
