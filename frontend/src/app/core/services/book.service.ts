@@ -14,8 +14,8 @@ export class BookService{
       return this.http.get<any[]>(this.api);
     }
 
-    getBookDetails(id: number, sortBy: string = 'new'){
-      return this.http.get<any>(`${this.api}/${id}?sortBy=${sortBy}`);
+    getBookDetails(id: number, sortBy: string = 'new'): Observable<BookDetails> {
+      return this.http.get<BookDetails>(`${this.api}/${id}?sortBy=${sortBy}`);
     }
 
     rateBook(bookId: number, score: number){

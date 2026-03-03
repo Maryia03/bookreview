@@ -14,7 +14,7 @@ export interface BookDetails{
   title: string;
   author: string;
   description: string;
-  coverUrl: string;
+  coverUrl: string | null;
   averageRating: number;
   ratingsCount: number;
   userRating: number | null;

@@ -3,8 +3,28 @@
 
   <div class="section">
     <h2>Books</h2>
+    <button class="add-book-btn" (click)="showAddBookModal = true">Add Book</button>
+
+    <!-- Модальное окно для добавления книги -->
+    <div class="modal" *ngIf="showAddBookModal">
+      <div class="modal-content">
+        <h3>Create New Book</h3>
+        <form (submit)="createBook($event)">
+          <input type="text" placeholder="Title" [(ngModel)]="newBook.title" name="title" required />
+          <input type="text" placeholder="Author" [(ngModel)]="newBook.author" name="author" required />
+          <input type="text" placeholder="Description" [(ngModel)]="newBook.description" name="description" />
+          <input type="text" placeholder="Cover URL" [(ngModel)]="newBook.coverUrl" name="coverUrl" />
+          <div class="modal-buttons">
+            <button type="submit">Create</button>
+            <button type="button" (click)="closeModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Список книг -->
     <div *ngFor="let book of books" class="row">
-      <span>{{ book.title }}</span>
+      <span>{{ book.title }} by {{ book.author }}</span>
       <button class="delete" (click)="deleteBook(book.id)">Delete</button>
     </div>
   </div>
@@ -13,7 +33,12 @@
     <h2>Users</h2>
     <div *ngFor="let user of users" class="row">
       <span>{{ user.username }} ({{ user.email }})</span>
-      <button class="block" (click)="blockUser(user.id)">Block</button>
+      <button
+        [ngClass]="user.blocked ? 'unblock' : 'block'"
+        (click)="toggleBlockUser(user)"
+      >
+        {{ user.blocked ? 'Unblock' : 'Block' }}
+      </button>
     </div>
   </div>
 </div>

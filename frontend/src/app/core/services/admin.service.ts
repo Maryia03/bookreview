@@ -30,12 +30,12 @@ export class AdminService{
     return this.http.get<any[]>(`${this.api}/users`);
   }
 
-  blockUser(id: number){
-    return this.http.put(`${this.api}/users/${id}/block`, {});
+  blockUser(id: number) {
+    return this.http.put<{blocked: boolean}>(`${this.api}/users/${id}/block`, {});
   }
 
-  unblockUser(id: number){
-    return this.http.put(`${this.api}/users/${id}/unblock`, {});
+  unblockUser(id: number) {
+    return this.http.put<{blocked: boolean}>(`${this.api}/users/${id}/unblock`, {});
   }
 
   deleteComment(id: number) {
