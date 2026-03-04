@@ -8,12 +8,23 @@
     </div>
   </div>
 
+  <div *ngIf="editing" class="edit-form">
+    <input [(ngModel)]="user.username" placeholder="Username" />
+    <input [(ngModel)]="user.avatarUrl" placeholder="Avatar URL" />
+
+    <div class="buttons">
+      <button (click)="saveProfile()">Save</button>
+      <button (click)="editing = false">Cancel</button>
+    </div>
+  </div>
+
   <div class="section">
     <h3>⭐ Rated books</h3>
-    <div class="list">
-      <div *ngFor="let book of ratedBooks" class="item">
-        {{ book.title }} — {{ book.rating }}/10
-      </div>
+    <div *ngFor="let rating of ratedBooks" class="item">
+      <a [routerLink]="['/book', rating.bookId]">
+        {{ rating.bookTitle }}
+      </a>
+      — {{ rating.value }}/10
     </div>
   </div>
 
@@ -21,7 +32,14 @@
     <h3>💬 Your comments</h3>
     <div class="list">
       <div *ngFor="let comment of comments" class="item">
+        <a [routerLink]="['/book', comment.bookId]">
+          {{ comment.bookTitle }}
+        </a>
+        <br>
         "{{ comment.content }}"
+        <button (click)="deleteComment(comment.id)">
+          Delete
+        </button>
       </div>
     </div>
   </div>

@@ -1,14 +1,15 @@
 .profile-container {
-  max-width: 900px;
-  margin: 40px auto;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
 }
 
 .profile-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
   text-align: center;
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 
   .avatar {
     width: 120px;
@@ -17,7 +18,7 @@
     object-fit: cover;
     margin-bottom: 15px;
   }
-}
+
 
 .blocked {
   color: red;
@@ -35,4 +36,57 @@
 .item {
   padding: 10px;
   border-bottom: 1px solid #eee;
+}
+
+.edit-form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.edit-form input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.edit-form button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #3b82f6;
+  color: white;
+}
+
+.blocked {
+  margin-top: 10px;
+  color: red;
+  font-weight: bold;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.section .list {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.section .item {
+  margin-bottom: 8px;
+}
+
+.section .item a {
+  font-weight: 600;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.section .item a:hover {
+  text-decoration: underline;
 }

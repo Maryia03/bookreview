@@ -13,12 +13,9 @@ export class UserService{
     return this.http.get<any>(`${this.api}/me`);
   }
 
-  updateProfile(username: string, avatarUrl: string){
-      return this.http.put(`${this.api}/me`,{
-        username,
-        avatarUrl
-      });
-    }
+  updateProfile(data: { username: string; avatarUrl: string }){
+    return this.http.put<any>(`${this.api}/me`, data);
+  }
 
   getUserRatings(){
     return this.http.get<any[]>(`${this.api}/ratings`);
@@ -26,5 +23,9 @@ export class UserService{
 
   getUserComments(){
     return this.http.get<any[]>(`${this.api}/comments`);
+  }
+
+  deleteComment(id: number){
+    return this.http.delete(`http://localhost:8080/api/comments/${id}`);
   }
 }
