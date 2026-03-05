@@ -33,6 +33,7 @@ public class UserService{
                 .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
                 .createdAt(user.getCreatedAt())
+                .role(user.getRole())
                 .blocked(user.isBlocked())
                 .build();
     }
@@ -110,6 +111,7 @@ public class UserService{
                 .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
                 .createdAt(user.getCreatedAt())
+                .role(user.getRole())
                 .blocked(user.isBlocked())
                 .ratings(getRatingsForUser(user))
                 .comments(getCommentsForUser(user))
