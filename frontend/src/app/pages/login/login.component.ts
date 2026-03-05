@@ -55,6 +55,6 @@ export class LoginComponent {
   toggleMode() {
     this.isRegister = !this.isRegister;
     this.error = '';
-    this.cdr.detectChanges(); // меняем текст и форму сразу
+    this.cdr.detectChanges();
   }
 }

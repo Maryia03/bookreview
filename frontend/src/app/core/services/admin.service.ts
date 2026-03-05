@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 export class AdminService{
   private api = 'http://localhost:8080/api/admin';
   constructor(private http: HttpClient) {}
+
   //books
   createBook(book: any){
       return this.http.post(`${this.api}/books`, book);

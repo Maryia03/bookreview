@@ -1,11 +1,8 @@
 <div class="admin-container">
   <h1>🛠 Admin panel</h1>
-
   <div class="section">
     <h2>Books</h2>
     <button class="add-book-btn" (click)="showAddBookModal = true">Add Book</button>
-
-    <!-- Модальное окно для добавления книги -->
     <div class="modal" *ngIf="showAddBookModal">
       <div class="modal-content">
         <h3>Create New Book</h3>
@@ -22,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Список книг -->
     <div *ngFor="let book of books" class="row">
       <span>{{ book.title }} by {{ book.author }}</span>
       <button class="delete" (click)="deleteBook(book.id)">Delete</button>

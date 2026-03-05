@@ -2,54 +2,70 @@
   <div class="bookdetails-container">
     <div class="book-header">
       <img [src]="book.coverUrl || 'assets/no-cover.png'" width="150" alt="Cover"/>
-      <h1>{{ book.title }}</h1>
-      <h3>{{ book.author }}</h3>
-      <div class="rating">
-        <ng-container *ngFor="let i of fullStars">
-    <span class="star"
-          [class.filled]="userRating >= i"
-          [class.half]="userRating + 0.5 === i"
-          (click)="!user?.blocked && submitHalfOrFullRating($event, i)">
-      ★
-    </span>
-        </ng-container>
-        <span class="count">
-    {{ book.averageRating.toFixed(1) }} / 10 ({{ book.ratingsCount }} ratings)
-  </span>
+      <div class="book-info">
+        <h1>{{ book.title }}</h1>
+        <h3>{{ book.author }}</h3>
+        <div class="rating">
+          <ng-container *ngFor="let i of fullStars">
+            <span class="star"
+                  [class.filled]="userRating >= i"
+                  [class.half]="userRating + 0.5 === i"
+                  (click)="!user?.blocked && submitHalfOrFullRating($event, i)">
+              ★
+            </span>
+          </ng-container>
+          <span class="count">
+            {{ book.averageRating.toFixed(1) }} / 10 ({{ book.ratingsCount }} ratings)
+          </span>
+        </div>
+        <p>{{ book.description }}</p>
       </div>
-      <p>{{ book.description }}</p>
+    </div>
+    <div *ngIf="user?.role === 'ROLE_ADMIN'" class="admin-book-actions">
+      <button class="edit-book-btn" (click)="editMode = true">✏ Edit book</button>
     </div>
 
+    <div *ngIf="editMode" class="edit-book-container">
+      <input [(ngModel)]="book.title" placeholder="Title" />
+      <input [(ngModel)]="book.author" placeholder="Author" />
+      <textarea [(ngModel)]="book.description" placeholder="Description"></textarea>
+      <input [(ngModel)]="book.coverUrl" placeholder="Cover URL" />
+      <div class="edit-buttons">
+        <button class="save" (click)="updateBook()">Save</button>
+        <button class="cancel" (click)="editMode = false">Cancel</button>
+      </div>
+    </div>
     <hr />
+
     <div class="comment-actions">
       <div *ngIf="!user?.blocked">
-      <input type="text" [(ngModel)]="newComment" placeholder="Write a comment..." />
-      <button (click)="submitComment()">Post</button>
+        <input type="text" [(ngModel)]="newComment" placeholder="Write a comment..." />
+        <button (click)="submitComment()">Post</button>
       </div>
       <span>Sort by:</span>
-      <button (click)="changeSort('new')" [disabled]="sortBy === 'new'">New</button>
-      <button (click)="changeSort('top')" [disabled]="sortBy === 'top'">Top</button>
+      <button (click)="changeSort('new')" [disabled]="sortBy==='new'">New</button>
+      <button (click)="changeSort('top')" [disabled]="sortBy==='top'">Top</button>
     </div>
 
     <div *ngFor="let comment of comments" class="comment">
-      <strong>
-        <a [routerLink]="['/user', comment.userId]">{{ comment.username }}</a>
-      </strong>
+      <div class="comment-header">
+        <strong><a [routerLink]="['/user', comment.userId]">{{ comment.username }}</a></strong>
+        <div *ngIf="user?.role === 'ROLE_ADMIN'" class="comment-menu" (click)="$event.stopPropagation()">
+          <button class="dots" (click)="toggleMenu(comment.id)">⋮</button>
+          <div class="menu-dropdown" *ngIf="activeMenuCommentId === comment.id">
+            <button (click)="deleteComment(comment.id)">Delete</button>
+            <button (click)="blockUser(comment.userId)">Block user</button>
+          </div>
+        </div>
+      </div>
       <p>{{ comment.content }}</p>
 
       <div class="reactions">
-        <span [class.active]="comment.userReaction === 'like'" (click)="!user?.blocked && likeComment(comment)">
-          👍 {{ comment.likesCount }}
-        </span>
-        <span [class.active]="comment.userReaction === 'dislike'" (click)="!user?.blocked && dislikeComment(comment)">
-          👎 {{ comment.dislikesCount }}
-        </span>
+        <span [class.active]="comment.userReaction==='like'" (click)="!user?.blocked && likeComment(comment)">👍 {{ comment.likesCount }}</span>
+        <span [class.active]="comment.userReaction==='dislike'" (click)="!user?.blocked && dislikeComment(comment)">👎 {{ comment.dislikesCount }}</span>
       </div>
     </div>
-
-    <button *ngIf="book.totalPages > 1 && page < book.totalPages - 1" (click)="loadMore()">
-      Load more
-    </button>
+    <button *ngIf="book.totalPages > 1 && page < book.totalPages - 1" (click)="loadMore()">Load more</button>
   </div>
 </ng-container>
 

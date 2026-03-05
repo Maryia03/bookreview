@@ -41,45 +41,37 @@ export class BookService {
 
   constructor(private http: HttpClient) {}
 
-  // Все книги
-  getAllBooks(): Observable<any[]> {
+  getAllBooks(): Observable<any[]>{
     return this.http.get<any[]>(`${this.api}/books`);
   }
 
-
-  // Детали одной книги
-  getBookDetails(id: number, sortBy: string = 'new'): Observable<BookDetails> {
+  getBookDetails(id: number, sortBy: string = 'new'): Observable<BookDetails>{
     return this.http.get<BookDetails>(`${this.api}/books/${id}?sortBy=${sortBy}`);
   }
 
-  // Поставить оценку книге
-  rateBook(bookId: number, score: number): Observable<any> {
+  rateBook(bookId: number, score: number): Observable<any>{
     return this.http.post(`${this.api}/books/${bookId}/ratings`, { score });
   }
 
-  // Получить комментарии с пагинацией
-  getComments(bookId: number, page = 0, size = 10, sortBy = 'new'): Observable<any> {
+  getComments(bookId: number, page = 0, size = 10, sortBy = 'new'): Observable<any>{
     return this.http.get<any>(
       `${this.api}/books/${bookId}/comments?page=${page}&size=${size}&sortBy=${sortBy}`
     );
   }
 
-  // Добавить комментарий
-  addComment(bookId: number, content: string): Observable<CommentDTO> {
+  addComment(bookId: number, content: string): Observable<CommentDTO>{
     return this.http.post<CommentDTO>(`${this.api}/books/${bookId}/comments`, { content });
   }
 
-  // Лайк комментария
-  likeComment(commentId: number) {
+  likeComment(commentId: number){
     return this.http.post<any>(`http://localhost:8080/api/comments/${commentId}/like`, {});
   }
 
-  dislikeComment(commentId: number) {
+  dislikeComment(commentId: number){
     return this.http.post<any>(`http://localhost:8080/api/comments/${commentId}/dislike`, {});
   }
 
-  // Поиск книг
-  searchBooks(query: string): Observable<any[]> {
+  searchBooks(query: string): Observable<any[]>{
     if (!query.trim()) return this.getAllBooks();
     return this.http.get<any[]>(`${this.api}/books?search=${encodeURIComponent(query)}`);
   }

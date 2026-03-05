@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../core/services/admin.service';
 
-export interface Book {
+export interface Book{
   id: number;
   title: string;
   author: string;
@@ -20,7 +20,8 @@ export interface Book {
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+
+export class AdminComponent implements OnInit{
   books: Book[] = [];
   users: any[] = [];
   newBook: Partial<Book> = {};
@@ -45,7 +46,6 @@ export class AdminComponent implements OnInit {
         });
   }
 
-  // Books
   createBook(event: Event){
     event.preventDefault();
     if (!this.newBook.title || !this.newBook.author) return;
@@ -69,12 +69,12 @@ export class AdminComponent implements OnInit {
   toggleBlockUser(user: any){
     if (user.blocked) {
       this.adminService.unblockUser(user.id).subscribe(res =>{
-        user.blocked = res.blocked; // изменяем только локально
+        user.blocked = res.blocked;
         this.cdr.detectChanges();
       });
     } else {
       this.adminService.blockUser(user.id).subscribe(res =>{
-        user.blocked = res.blocked; // изменяем только локально
+        user.blocked = res.blocked;
         this.cdr.detectChanges();
       });
     }

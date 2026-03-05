@@ -2,35 +2,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background: #1f2937;
-  color: white;
+  padding: 1rem 2rem;
+  background-color: #3f51b5;
+  color: #fff;
 
   .logo {
-    font-size: 22px;
+    font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
   }
 
   .links {
     display: flex;
-    gap: 20px;
-    align-items: center;
+    gap: 1rem;
 
-    a {
-      color: white;
+    a, button {
+      color: #fff;
       text-decoration: none;
       font-weight: 500;
-      cursor: pointer;
-    }
-
-    button {
-      background: #ef4444;
+      background: none;
       border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      color: white;
       cursor: pointer;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #ff6f61;
+      }
     }
   }
 }

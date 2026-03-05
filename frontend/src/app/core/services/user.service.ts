@@ -8,6 +8,7 @@ export interface User{
   email: string;
   avatarUrl: string;
   blocked: boolean;
+  role: string;
 }
 
 export interface UserDTO {
