@@ -35,15 +35,12 @@
     <h3>💬 Your comments</h3>
     <div class="list">
       <div *ngFor="let comment of comments" class="item">
-        <a [routerLink]="['/book', comment.bookId]">
-          {{ comment.bookTitle }}
-        </a>
-        <br>
-        "{{ comment.content }}"
-        <button (click)="deleteComment(comment.id)">
-          Delete
-        </button>
+        <div class="text-container">
+          <a [routerLink]="['/book', comment.bookId]">{{ comment.bookTitle }}</a>
+          <p>"{{ comment.content }}"</p>
+        </div>
+        <button (click)="deleteComment(comment.id)">Delete</button>
+      </div>
       </div>
     </div>
   </div>
-</div>
