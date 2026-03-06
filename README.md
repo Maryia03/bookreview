@@ -10,12 +10,12 @@ BookReview is a web application for viewing books, assigning ratings, and writin
 - Docker
 
 ## ⚙️ Running the Project
-Backend:
+- Backend:
   cd backend
   ./mvnw spring-boot:run
-Frontend:
+- Frontend:
   cd frontend
   npm install
   ng serve
-Docker:
+- Docker:
   docker compose up --build
