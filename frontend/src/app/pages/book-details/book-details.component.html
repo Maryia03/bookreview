@@ -50,6 +50,7 @@
 
     <div *ngFor="let comment of comments" class="comment">
       <div class="comment-header">
+        <img class="comment-avatar" [src]="comment.avatarUrl || 'assets/no-avatar.png'" alt="User avatar">
         <strong><a [routerLink]="['/user', comment.userId]">{{ comment.username }}</a></strong>
         <div *ngIf="user?.role === 'ROLE_ADMIN'" class="comment-menu" (click)="$event.stopPropagation()">
           <button class="dots" (click)="toggleMenu(comment.id)">⋮</button>

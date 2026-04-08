@@ -7,6 +7,7 @@ export interface CommentDTO {
     username: string;
     content: string;
     userId: number;
+    avatarUrl?: string;
     likesCount: number;
     dislikesCount: number;
     userReaction: string | null;
