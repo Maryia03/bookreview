@@ -29,11 +29,23 @@
         align-items: center;
         gap: 0.5rem;
         .star {
-          font-size: 1.5rem;
-          cursor: pointer;
-          &.filled { color: #ffb400; }
-          &.half { color: #ffd966; }
-        }
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ddd; //empty star
+            position: relative;
+
+            &.filled {
+              color: #ffb400; //full star
+            }
+
+            &.half {
+              color: #ddd;
+              background: linear-gradient(90deg, #ffb400 50%, #ddd 50%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+            }
+          }
         .count { font-size: 0.9rem; color: #777; }
       }
       p { margin-top: 1rem; line-height: 1.5; }
