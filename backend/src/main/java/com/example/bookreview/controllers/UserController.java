@@ -35,7 +35,7 @@ public class UserController{
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Blocked users cannot update profile");
         }
         User updated = userService.updateProfile(email, request);
-        UserDTO dto = userService.mapToDTO(updated); // используй метод mapToDTO из UserService
+        UserDTO dto = userService.mapToDTO(updated);
         return ResponseEntity.ok(dto);
     }
 

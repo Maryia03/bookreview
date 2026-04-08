@@ -50,10 +50,8 @@ public class CommentService{
                 .createdDate(comment.getCreatedDate())
                 .username(comment.getUser().getUsername())
                 .avatarUrl(comment.getUser().getAvatarUrl())
-                .likesCount(comment.getReactions() == null ? 0 :
-                        comment.getReactions().stream().filter(r -> r.getValue() == 1).count())
-                .dislikesCount(comment.getReactions() == null ? 0 :
-                        comment.getReactions().stream().filter(r -> r.getValue() == -1).count())
+                .likesCount(comment.getReactions() == null ? 0 : comment.getReactions().stream().filter(r -> r.getValue() == 1).count())
+                .dislikesCount(comment.getReactions() == null ? 0 : comment.getReactions().stream().filter(r -> r.getValue() == -1).count())
                 .userReaction(null)
                 .build();
     }

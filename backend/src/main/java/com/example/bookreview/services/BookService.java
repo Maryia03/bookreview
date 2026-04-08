@@ -83,6 +83,13 @@ public class BookService {
         return mapToDTO(book);
     }
 
+    public List<BookDTO> searchBooks(String query){
+        return bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(query, query)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
     public void deleteBook(Long id){
         Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
         bookRepository.delete(book);

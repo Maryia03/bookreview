@@ -35,4 +35,9 @@ public class BookController{
         BookDetailsDTO dto = bookService.getBookDetails(id, currentUser, sortBy);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<BookDTO>> searchBooks(@RequestParam String query){
+        return ResponseEntity.ok(bookService.searchBooks(query));
+    }
 }
