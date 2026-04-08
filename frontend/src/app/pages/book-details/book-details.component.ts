@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.scss']
 })
-export class BookDetailsComponent implements OnInit {
+export class BookDetailsComponent implements OnInit{
   book: BookDetails | null = null;
   comments: CommentDTO[] = [];
   user: User | null = null;
@@ -72,11 +72,18 @@ export class BookDetailsComponent implements OnInit {
     return Array.from({ length: 10 }, (_, i) => i + 1);
   }
 
-  get userRating(): number {
+  get displayRating(): number{
+    if (this.user && this.book?.userRating){
+      return this.book.userRating;
+    }
+    return this.book?.averageRating ?? 0;
+  }
+
+  get userRating(): number{
     return this.book?.userRating ?? 0;
   }
 
-  submitHalfOrFullRating(event: MouseEvent, starNumber: number): void {
+  submitHalfOrFullRating(event: MouseEvent, starNumber: number): void{
     if (!this.book) return;
     const target = event.target as HTMLElement;
     const { left, width } = target.getBoundingClientRect();
@@ -89,13 +96,13 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  changeSort(sort: string): void {
+  changeSort(sort: string): void{
     this.sortBy = sort;
     this.page = 0;
     if (this.book) this.loadBook(this.book.id);
   }
 
-  loadMore(): void {
+  loadMore(): void{
     if (!this.book) return;
     this.loading = true;
     this.bookService.getComments(this.book.id, this.page + 1, 10, this.sortBy).subscribe({
@@ -112,7 +119,7 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  submitComment(): void {
+  submitComment(): void{
     if (!this.book || !this.newComment.trim()) return;
     this.bookService.addComment(this.book.id, this.newComment).subscribe({
       next: comment => {
@@ -124,7 +131,7 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  likeComment(comment: CommentDTO): void {
+  likeComment(comment: CommentDTO): void{
     this.bookService.likeComment(comment.id).subscribe({
       next: updated => {
         this.comments = this.comments.map(c => c.id === updated.id ? updated : c);
@@ -134,7 +141,7 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  dislikeComment(comment: CommentDTO): void {
+  dislikeComment(comment: CommentDTO): void{
     this.bookService.dislikeComment(comment.id).subscribe({
       next: updated => {
         this.comments = this.comments.map(c => c.id === updated.id ? updated : c);
@@ -144,11 +151,11 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  toggleMenu(commentId: number) {
+  toggleMenu(commentId: number){
     this.activeMenuCommentId = this.activeMenuCommentId === commentId ? null : commentId;
   }
 
-  deleteComment(commentId: number) {
+  deleteComment(commentId: number){
     this.adminService.deleteComment(commentId).subscribe(() => {
       this.comments = this.comments.filter(c => c.id !== commentId);
       this.activeMenuCommentId = null;
@@ -156,14 +163,14 @@ export class BookDetailsComponent implements OnInit {
     });
   }
 
-  blockUser(userId: number) {
+  blockUser(userId: number){
     this.adminService.blockUser(userId).subscribe(() => {
       alert("User blocked");
       this.activeMenuCommentId = null;
     });
   }
 
-  updateBook(): void {
+  updateBook(): void{
     if (!this.book) return;
     this.adminService.updateBook(this.book.id, this.book).subscribe(() => {
       this.editMode = false;

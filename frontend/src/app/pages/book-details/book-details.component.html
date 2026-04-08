@@ -7,16 +7,17 @@
         <h3>{{ book.author }}</h3>
         <div class="rating">
           <ng-container *ngFor="let i of fullStars">
-    <span class="star"
-          [class.filled]="userRating >= i"
-          [class.half]="userRating >= i - 0.5 && userRating < i"
-          (click)="!user?.blocked && submitHalfOrFullRating($event, i)">
-      ★
-    </span>
+            <span class="star"
+                  [class.user-rated]="user"
+                  [class.filled]="displayRating >= i"
+                  [class.half]="displayRating >= i - 0.5 && displayRating < i"
+                  (click)="user && !user.blocked && submitHalfOrFullRating($event, i)">
+              ★
+            </span>
           </ng-container>
           <span class="count">
-    {{ book.averageRating.toFixed(1) }} / 10 ({{ book.ratingsCount }} ratings)
-  </span>
+              {{ book.averageRating.toFixed(1) }} / 10 ({{ book.ratingsCount }} ratings)
+          </span>
         </div>
         <p>{{ book.description }}</p>
       </div>

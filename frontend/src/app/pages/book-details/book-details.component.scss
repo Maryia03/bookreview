@@ -24,29 +24,48 @@
         font-weight: normal;
         color: #555;
       }
+
       .rating {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.3rem;
+
         .star {
-            font-size: 1.5rem;
+          font-size: 1.5rem;
+          color: #ddd;
+          position: relative;
+          cursor: default;
+
+          &.filled {
+            color: #ffb400;
+          }
+
+          &.half {
+            background: linear-gradient(90deg, #ffb400 50%, #ddd 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+
+          &.user-rated {
             cursor: pointer;
-            color: #ddd; //empty star
-            position: relative;
 
             &.filled {
-              color: #ffb400; //full star
+              color: #ff6600;
             }
 
             &.half {
-              color: #ddd;
-              background: linear-gradient(90deg, #ffb400 50%, #ddd 50%);
+              background: linear-gradient(90deg, #ff8c00 50%, #ddd 50%);
               -webkit-background-clip: text;
               -webkit-text-fill-color: transparent;
-              background-clip: text;
             }
           }
-        .count { font-size: 0.9rem; color: #777; }
+        }
+
+        .count {
+          font-size: 0.9rem;
+          color: #777;
+          margin-left: 0.5rem;
+        }
       }
       p { margin-top: 1rem; line-height: 1.5; }
     }
