@@ -1,6 +1,9 @@
 # Bookreview
 BookReview is a web application for viewing books, assigning ratings, and writing comments. Users can rate books, discuss them in comments, and view other users ratings.
 
+## Screenshots
+![Screenshot](pic/homepage.png)
+
 ## 🛠️ Technologies
 - Java 21
 - Spring Boot, Spring Security, Spring Data JPA, Spring MVC 
