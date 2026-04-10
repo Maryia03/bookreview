@@ -28,9 +28,9 @@ public class Book{
     @Column(name = "cover_url")
     private String coverUrl;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 }
