@@ -3,9 +3,9 @@ BookReview is a web application for viewing books, assigning ratings, and writin
 
 ## 🛠️ Technologies
 - Java 21
-- Spring Boot 
+- Spring Boot, Spring Security, Spring Data JPA, Spring MVC 
 - Angular
-- JWT authentication
+- JWT
 - MySQL
 - Docker
 
@@ -14,12 +14,11 @@ BookReview is a web application for viewing books, assigning ratings, and writin
   - Register and log in
   - Browse books
   - View book pages
-  - Rate books (0.5 – 10 scale)
+  - Rate books
   - Write comments
   - Like / dislike comments
-  - View personal profile
-  - Edit profile (username, avatar)
-  - Viewing personal ratings and comments
+  - View and edit personal profile
+  - View other users profiles
 - Admin:
   - Create books
   - Edit books
