@@ -39,13 +39,17 @@
     <hr />
 
     <div class="comment-actions">
-      <div *ngIf="!user?.blocked">
-        <input type="text" [(ngModel)]="newComment" placeholder="Write a comment..." />
-        <button (click)="submitComment()">Post</button>
+      <div class="comment-left">
+        <div *ngIf="!user?.blocked" class="comment-input">
+          <input type="text" [(ngModel)]="newComment" placeholder="Write a comment" />
+          <button (click)="submitComment()">Post</button>
+        </div>
       </div>
-      <span>Sort by:</span>
-      <button (click)="changeSort('new')" [disabled]="sortBy==='new'">New</button>
-      <button (click)="changeSort('top')" [disabled]="sortBy==='top'">Top</button>
+      <div class="comment-right">
+        <span>Sort by:</span>
+        <button (click)="changeSort('new')" [disabled]="sortBy==='new'">New</button>
+        <button (click)="changeSort('top')" [disabled]="sortBy==='top'">Top</button>
+      </div>
     </div>
 
     <div *ngFor="let comment of comments" class="comment">
