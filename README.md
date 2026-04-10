@@ -3,6 +3,9 @@ BookReview is a web application for viewing books, assigning ratings, and writin
 
 ## Screenshots
 ![Screenshot](pic/homepage.png)
+![Screenshot](pic/loginpage.png)
+![Screenshot](pic/bookpage.png)
+![Screenshot](pic/profilepage.png)
 
 ## 🛠️ Technologies
 - Java 21
